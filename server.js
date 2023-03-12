@@ -15,7 +15,7 @@ app.get('/articles', async (req, res) => {
       url: article.url || '',
       publishedAt: article.publishedAt || '',
       content: article.content || '',
-      urlToImage: article.urlToImage || ''
+      urlToImage: article.urlToImage || 'https://www.housingeurope.eu/image/163/sectionheaderpng/resourcesdef.png'
     }));
     res.json({ articles });
   } catch (error) {

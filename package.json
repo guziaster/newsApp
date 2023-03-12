@@ -1,0 +1,23 @@
+{
+  "name": "newsapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/guziaster/newsApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guziaster/newsApp/issues"
+  },
+  "homepage": "https://github.com/guziaster/newsApp#readme",
+  "dependencies": {
+    "axios": "^1.3.4",
+    "express": "^4.18.2"
+  }
+}

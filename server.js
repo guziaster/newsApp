@@ -14,7 +14,8 @@ app.get('/articles', async (req, res) => {
       description: article.description || '',
       url: article.url || '',
       publishedAt: article.publishedAt || '',
-      content: article.content || ''
+      content: article.content || '',
+      urlToImage: article.urlToImage || ''
     }));
     res.json({ articles });
   } catch (error) {

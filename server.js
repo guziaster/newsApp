@@ -4,8 +4,7 @@ const axios = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = "f3f342144dff46569771644ceef85fd2";
-//715dc191ff584bb2b070568ffb2d6683
-//https://funny-moth-pants.cyclic.app/articles?country=pl&category=business&fbclid=IwAR0QWxDsDdttCb8-u1DZapynzNiwqlkGCevlKtQaeYSszOpj2JzuCFMIZE0
+
 app.get("/articles/:q?/:category?/:country?/:from?/:to?", async (req, res) => {
   try {
     const date = new Date();

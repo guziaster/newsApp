@@ -4,28 +4,44 @@ const axios = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = "f3f342144dff46569771644ceef85fd2";
-//"https://newsapi.org/v2/everything?q=test&from=2023-02-10&to=2023-03-12&sortBy=relevancy&apiKey=715dc191ff584bb2b070568ffb2d6683"
-app.get("/articles/:query?", async (req, res) => {
+//715dc191ff584bb2b070568ffb2d6683
+//https://funny-moth-pants.cyclic.app/articles?country=pl&category=business&fbclid=IwAR0QWxDsDdttCb8-u1DZapynzNiwqlkGCevlKtQaeYSszOpj2JzuCFMIZE0
+app.get("/articles/:q?/:category?/:country?/:from?/:to?", async (req, res) => {
   try {
     const date = new Date();
-
     let day = date.getDate();
     let month = date.getMonth();
-    let lastMonth = date.getMonth() - 1;
     let year = date.getFullYear();
     let currentDate = `${year}-${month}-${day}`;
-    let lastMonthDate = `${year}-${lastMonth}-${day}`;
-    const parameter = req.params.query;
-    var response;
-    if (parameter) {
-      response = await axios.get(
-        `https://newsapi.org/v2/everything?q=${parameter}&from=${lastMonthDate}to=${currentDate}&sortBy=relevancy&apiKey=715dc191ff584bb2b070568ffb2d6683`
-      );
+    let last3DaysFullDate = getLast3DaysDate();
+    let last3DaysDate = `${last3DaysFullDate.getFullYear()}-${last3DaysFullDate.getMonth()}-${last3DaysFullDate.getDate()}`;
+
+    const { q, category, country, from, to } = req.query;
+    const queryParameter = req.params.q;
+    const categoryParameter = req.params.category;
+
+    const dateFromParameter = from ? from : last3DaysDate;
+    const dateToParameter = to ? to : currentDate;
+    const sortingParameter = "popularity";
+
+    let url = new URL("https://newsapi.org/v2/everything");
+    if (q) {
+      url.searchParams.append("q", q);
     } else {
-      response = await axios.get(
-        `https://newsapi.org/v2/top-headlines?sources=google-news&apiKey=${API_KEY}`
-      );
+      url = new URL("https://newsapi.org/v2/top-headlines");
+      if (category) {
+        url.searchParams.append("category", category);
+      }
+      if (country) {
+        url.searchParams.append("country", country);
+      }
     }
+    url.searchParams.append("from", dateFromParameter);
+    url.searchParams.append("to", dateToParameter);
+    url.searchParams.append("sortBy", sortingParameter);
+    url.searchParams.append("apiKey", API_KEY);
+
+    const response = await axios.get(url);
 
     const articles = response.data.articles.map((article) => ({
       author: article.author || "",
@@ -41,8 +57,14 @@ app.get("/articles/:query?", async (req, res) => {
     res.json({ articles });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).send(error.response.data);
   }
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+function getLast3DaysDate() {
+  const now = new Date();
+
+  return new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+}

@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = "f3f342144dff46569771644ceef85fd2";
 
-app.get("/articles/:q?/:category?/:country?/:from?/:to?", async (req, res) => {
+app.get("/article", async (req, res) => {
   try {
     const date = new Date();
     let day = date.getDate();

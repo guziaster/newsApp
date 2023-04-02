@@ -26,7 +26,7 @@ app.get("/articles/:q?/:category?/:country?/:from?/:to?", async (req, res) => {
     let url = new URL("https://newsapi.org/v2/everything");
     if (q) {
       url.searchParams.append("q", q);
-    } else {
+    } else if (category || country) {
       url = new URL("https://newsapi.org/v2/top-headlines");
       if (category) {
         url.searchParams.append("category", category);
@@ -34,6 +34,9 @@ app.get("/articles/:q?/:category?/:country?/:from?/:to?", async (req, res) => {
       if (country) {
         url.searchParams.append("country", country);
       }
+    } else {
+      url = new URL("https://newsapi.org/v2/top-headlines");
+      url.searchParams.append("sources", "bbc-news");
     }
     url.searchParams.append("from", dateFromParameter);
     url.searchParams.append("to", dateToParameter);

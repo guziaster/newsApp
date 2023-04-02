@@ -3,7 +3,7 @@ const axios = require("axios");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const API_KEY = "f3f342144dff46569771644ceef85fd2";
+const API_KEY = "d0bc50ba40234c879f866212f122e197";
 
 app.get("/articles", async (req, res) => {
   try {
@@ -46,13 +46,13 @@ app.get("/articles", async (req, res) => {
     const response = await axios.get(url);
 
     const articles = response.data.articles.map((article) => ({
-      author: article.author || "",
-      title: article.title || "",
-      description: article.content || "",
-      url: article.url || "",
-      publishedAt: article.publishedAt || "",
-      content: article.content || "",
-      urlToImage: article.urlToImage,
+      author: article.author ?? "",
+      title: article.title ?? "",
+      description: article.description ?? "",
+      url: article.url ?? "",
+      publishedAt: article.publishedAt ?? "",
+      content: article.content ?? "",
+      urlToImage: article.urlToImage ?? "",
     }));
     res.json({ articles });
   } catch (error) {
